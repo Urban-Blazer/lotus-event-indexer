@@ -1,0 +1,20 @@
+# Node  
+node_modules/
+
+# Env vars  
+.env
+
+# Logs  
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Prisma migrations (if you prefer keeping only migration folders)  
+prisma/migrations/
+
+# Docker artifacts  
+postgres_data/
+
+# OS files  
+.DS_Store
+Thumbs.db

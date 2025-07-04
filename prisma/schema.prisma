@@ -1,0 +1,100 @@
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+model BuybackClosed {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  blocks_sold String
+  close_deadline String
+  timestamp String
+}
+
+model LotusPoolCreated {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  a Json
+  b Json
+  init_a String
+  init_b String
+  init_reward_b String
+  init_lp_b String
+  pool_created String
+  created_by String
+  block_price String
+  block_quantity String
+  max_blocks String
+  buyback_limit String
+  lp_builder_fee String
+  burn_fee String
+  creator_royalty_fee String
+  rewards_fee String
+  creator_royalty_wallet String
+}
+
+model Option {
+  dbId String @id @unique @default(uuid())
+  vec Json[]
+}
+
+model PoolClosed {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  reason Int[]
+  timestamp String
+}
+
+model PoolSoldOut {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  total_blocks String
+  timestamp String
+}
+
+model Trade {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  wallet String
+  tokenin Json
+  amountin String
+  tokenout Json
+  amountout String
+  is_buy Boolean
+  reserve_a String
+  reserve_b String
+  trade_fee String
+  block_price String
+  block_quantity String
+  blocks_sold String
+  buyback_closed Boolean
+  pool_sold_out Boolean
+  close_deadline String?
+  timestamp String
+}
+
+model TradeFeeDistributed {
+  dbId String @id @unique @default(uuid())
+  pool_id String
+  amount String
+  timestamp String
+}
+
+model TypeName {
+  dbId String @id @unique @default(uuid())
+  name String
+}
+
+
+model cursor {
+  id        String @id
+  eventSeq  String
+  txDigest  String
+}
