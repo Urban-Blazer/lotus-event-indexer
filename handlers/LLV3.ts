@@ -1,6 +1,7 @@
 
 import { SuiEvent } from '@mysten/sui/client';
 import { prisma, Prisma } from '../db';
+import { writeBuybackClosedToDynamo, sendPoolSoldOutToSQS } from '../utils/aws-utils';
 
 export const handleLLV3Events = async (events: SuiEvent[], type: string) => {
   const eventsByType = new Map<string, any[]>();
@@ -38,18 +39,31 @@ export const handleLLV3Events = async (events: SuiEvent[], type: string) => {
           console.log('Created PoolClosed events');
           break;
         case 'BuybackClosed':
-          // TODO: handle BuybackClosed
           await prisma.buybackClosed.createMany({
             data: events as Prisma.BuybackClosedCreateManyInput[],
           });
           console.log('Created BuybackClosed events');
+
+          // Also write each event to DynamoDB
+          for (const event of events) {
+            await writeBuybackClosedToDynamo({
+              pool_id: event.pool_id,
+              blocks_sold: event.blocks_sold,
+              close_deadline: event.close_deadline,
+              timestamp: event.timestamp,
+            });
+          }
           break;
         case 'PoolSoldOut':
-          // TODO: handle PoolSoldOut
           await prisma.poolSoldOut.createMany({
             data: events as Prisma.PoolSoldOutCreateManyInput[],
           });
           console.log('Created PoolSoldOut events');
+
+          // Also send each event's poolId to SQS
+          for (const event of events) {
+            await sendPoolSoldOutToSQS(event.pool_id);
+          }
           break;
         case 'Trade':
           // TODO: handle Trade
