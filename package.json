@@ -10,7 +10,8 @@
     "api:dev": "npx ts-node server.ts",
     "indexer": "npx ts-node indexer.ts",
     "indexer:fast": "POLLING_INTERVAL_MS=1000 npx ts-node indexer.ts",
-    "indexer:slow": "POLLING_INTERVAL_MS=10000 npx ts-node indexer.ts"
+    "indexer:slow": "POLLING_INTERVAL_MS=10000 npx ts-node indexer.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.840.0",

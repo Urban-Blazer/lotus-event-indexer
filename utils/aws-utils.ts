@@ -16,7 +16,7 @@ export async function writeBuybackClosedToDynamo(event: {
     const command = new PutCommand({
         TableName: "LotusLaunchQueue",
         Item: {
-            pool_id: event.pool_id,
+            poolId: event.pool_id, // 🔥 fixed key casing here
             blocks_sold: event.blocks_sold,
             close_deadline: event.close_deadline,
             timestamp: event.timestamp
@@ -29,7 +29,6 @@ export async function writeBuybackClosedToDynamo(event: {
     } catch (error) {
         console.error("❌ Error writing BuybackClosed to DynamoDB:", error);
     }
-    
 }
 
 const sqsClient = new SQSClient({ region: REGION });
